@@ -4,29 +4,23 @@ let personne = {
     argent: 120,
     mainDroite: [],
     mainGauche: [],
-    seDeplacer (lieuArrivee, lieuDepart){
-        lieuArrivee.push(this);
-        lieuDepart.splice(0,1);
+    seDeplacer (lieuArrivee){
+        lieuArrivee.personnes.push(this);
+
+        console.log(`${this.nom} est à ${lieuArrivee.nom} `);
     },
-    payerArticle (){
-        for(let i = 0; i<this.mainDroite.length; i++){
-            this.argent -= epicerie.ingredients[i].prix;
-            epicerie.caisse +=epicerie.ingredient[i].prix;
+    payerArticle (stock){
+        for(let i = 0; i< stock.length; i++){
+            this.argent -= stock[i].prix;
         }
-        console.log(personne.argent)
-        console.log(epicerie.caisse);
-        bol.contenu.push(epicerie.ingredients)
-        this.mainDroite.splice(epicerie.ingredients)
+        console.log(this.argent)
     },
    couper (ingredient, outil){
-      for(let i = 0; i < bol.contenu.length; i++){
-        if(ingredient.etat == "entier"){
-            ingredient.etat = outil.action
-       }else if(ingredient.etat == "coquille" ){
-           ingredient.etat = "cassé"
-       }
-      }
-   },
+            ingredient.etat = "couper";
+            outil.etat = "couper";
+            console.log(`${this.nom} coupe ${ingredient.nom}`);
+        },
+
    prendre (){
     this.mainDroite.push(epicerie.bacPanier.shift());
  }
@@ -47,25 +41,36 @@ let personne = {
     let epicerie ={
         nom: "epicerie",
         personnes: [],
-        
-        ingredients : [],
+        ingredients : ["oeuf","oignon","sel","poivre","paprika"],
         caisse: 0,  
     };
-    
 
+    class Ingredients{
+        constructor(nom, etat, prix){
+            this.nom =  nom;
+            this.etat = etat;
+            this.prix = prix;
+        }
+    }
+    
     let poele ={
         contenu : [],
-        cuir(){
-            this.contenu = "cuit";
+        cuir(plat){
+            this.etat = "cuit";
+            setTimeout(function(){ console.log(` ${plat.nom} est bien cuite, bonne app !`); }, 4000);;
         }
     };
-    let myCuisson = setTimeout(poele.cuir, 4000);
+
 
     let bol ={
         contenu :[],
-        melanger(nomMelange){   
+        melanger(nomMelange){  
+            let newMelange = new Ingredients(nomMelange, "pas cuit", 5)
+           console.log("Il melange tout et obtient une omelette pas cuite");
+            return newMelange
+            
         }
     };
 
 
-    export{personne, epicerie, outil, maison, poele, myCuisson, bol};
+    export{personne, epicerie, outil, maison, poele, bol, Ingredients};
